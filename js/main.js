@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => revealObserver.observe(el));
   }
 
-  // 8. Franchise Lead Hook Popup Modal Controller
+  // 8. Franchise Lead Hook Popup Modal Controller (Franchise CS WA: +62 877-8104-7453 / 6287781047453)
   const franchisePopupModal = document.getElementById('franchise-popup-modal');
   const franchisePopupClose = document.getElementById('franchise-popup-close');
   const openFranchiseBtns = document.querySelectorAll('#btn-open-franchise-popup, .trigger-franchise-popup');
@@ -188,7 +188,8 @@ Saya bermaksud meminta Proposal Kemitraan Franchise Snaprint:
 Mohon rincian paket kemitraan & analisis ROI dikirimkan ya. Terima kasih!`;
 
         franchisePopupModal.classList.remove('active');
-        window.open(`https://wa.me/6281311933172?text=${encodeURIComponent(waText)}`, '_blank');
+        // Franchise specific WA number: +62 877-8104-7453
+        window.open(`https://wa.me/6287781047453?text=${encodeURIComponent(waText)}`, '_blank');
       });
     }
   }
