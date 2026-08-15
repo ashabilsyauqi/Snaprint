@@ -1,6 +1,6 @@
 /* ==========================================================================
    SNAPRINT DIGITAL PRINTING - MULTI-PAGE APPLICATION CONTROLLER
-   Active Route Detection, Mobile Navigation, Theme Manager, Modals & On-Scroll Reveal
+   Active Route Detection, Mobile Nav, Theme Manager, Modals & Franchise Popup Hook
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -135,5 +135,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     revealElements.forEach(el => revealObserver.observe(el));
+  }
+
+  // 8. Franchise Lead Hook Popup Modal Controller
+  const franchisePopupModal = document.getElementById('franchise-popup-modal');
+  const franchisePopupClose = document.getElementById('franchise-popup-close');
+  const openFranchiseBtns = document.querySelectorAll('#btn-open-franchise-popup, .trigger-franchise-popup');
+  const franchisePopupForm = document.getElementById('franchise-popup-form');
+
+  if (franchisePopupModal) {
+    // Show automatically after 5s on homepage if not shown in current session
+    const hasSeenPopup = sessionStorage.getItem('snaprint-franchise-popup-seen');
+    if (!hasSeenPopup && (currentPath === 'index.html' || currentPath === '')) {
+      setTimeout(() => {
+        franchisePopupModal.classList.add('active');
+        sessionStorage.setItem('snaprint-franchise-popup-seen', 'true');
+      }, 5000);
+    }
+
+    // Trigger on Navbar button or manual click
+    openFranchiseBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        franchisePopupModal.classList.add('active');
+      });
+    });
+
+    if (franchisePopupClose) {
+      franchisePopupClose.addEventListener('click', () => franchisePopupModal.classList.remove('active'));
+    }
+
+    franchisePopupModal.addEventListener('click', (e) => {
+      if (e.target === franchisePopupModal) franchisePopupModal.classList.remove('active');
+    });
+
+    if (franchisePopupForm) {
+      franchisePopupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('pop-name')?.value;
+        const phone = document.getElementById('pop-phone')?.value;
+        const city = document.getElementById('pop-city')?.value;
+        const budget = document.getElementById('pop-budget')?.value;
+
+        const waText = `Halo Snaprint Franchise Center! 👋
+Saya bermaksud meminta Proposal Kemitraan Franchise Snaprint:
+
+• Nama: *${name}*
+• WA/HP: *${phone}*
+• Kota Usaha: *${city}*
+• Estimasi Modal: *${budget}*
+
+Mohon rincian paket kemitraan & analisis ROI dikirimkan ya. Terima kasih!`;
+
+        franchisePopupModal.classList.remove('active');
+        window.open(`https://wa.me/6281311933172?text=${encodeURIComponent(waText)}`, '_blank');
+      });
+    }
   }
 });
