@@ -1,241 +1,282 @@
 /* ==========================================================================
-   SNAPRINT DIGITAL PRINTING - INTERACTIVE PRINT CALCULATOR ENGINE
-   Real-Time Price Calculation & Instant WhatsApp Order Generator
+   SNAPRINT DIGITAL PRINTING - INTERACTIVE CALCULATOR ENGINE
+   Area/Qty Price Math, Dynamic Spec Selectors, Bulk Discounts & WA Generator
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const calcTabsContainer = document.getElementById('calc-tabs');
-  const calcFormContainer = document.getElementById('calc-form-container');
-  const totalAmountEl = document.getElementById('calc-total-amount');
-  const summaryProductEl = document.getElementById('calc-summary-product');
-  const summarySpecEl = document.getElementById('calc-summary-spec');
-  const summaryQtyEl = document.getElementById('calc-summary-qty');
-  const summaryDiscountEl = document.getElementById('calc-summary-discount');
-  const btnOrderWa = document.getElementById('btn-order-wa');
+  if (typeof SNAP_PRODUCTS === 'undefined') return;
+
+  let currentProductId = 'banner-flexi';
+  let selectedMaterialIndex = 0;
+  let selectedFinishingIndex = 0;
+  let inputWidth = 2; // meters
+  let inputHeight = 1; // meters
+  let inputQty = 1;
+  let uploadedFileName = '';
+
+  // DOM Elements
+  const tabsContainer = document.getElementById('calc-tabs');
+  const formContainer = document.getElementById('calc-form-container');
+  const summaryProduct = document.getElementById('calc-summary-product');
+  const summarySpec = document.getElementById('calc-summary-spec');
+  const summaryQty = document.getElementById('calc-summary-qty');
+  const summaryDiscount = document.getElementById('calc-summary-discount');
+  const totalAmount = document.getElementById('calc-total-amount');
+  const btnOrderWA = document.getElementById('btn-order-wa');
   const fileDropZone = document.getElementById('file-drop-zone');
   const fileInputHidden = document.getElementById('file-input-hidden');
   const fileStatusText = document.getElementById('file-status-text');
 
-  if (!window.SNAP_PRODUCTS || !calcTabsContainer) return;
+  // FontAwesome Icon Mapping for Products
+  const productIcons = {
+    'banner-flexi': 'fa-solid fa-scroll',
+    'stiker-vinyl': 'fa-solid fa-tag',
+    'kartu-nama': 'fa-solid fa-id-card',
+    'print-a3': 'fa-solid fa-file-lines',
+    'lanyard-id': 'fa-solid fa-id-badge',
+    'plakat-akrilik': 'fa-solid fa-trophy',
+    'stempel-flash': 'fa-solid fa-stamp',
+    'mug-custom': 'fa-solid fa-mug-hot',
+    'rollup-banner': 'fa-solid fa-image'
+  };
 
-  let currentProductId = window.SNAP_PRODUCTS[0].id;
-  let currentFile = null;
+  // URL Parameter Pre-selection
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramProd = urlParams.get('product');
+  if (paramProd && SNAP_PRODUCTS.some(p => p.id === paramProd)) {
+    currentProductId = paramProd;
+  }
 
-  // Render Product Selector Tabs
-  function renderCalculatorTabs() {
-    calcTabsContainer.innerHTML = window.SNAP_PRODUCTS.map((p, idx) => `
-      <button type="button" class="calc-tab-btn ${idx === 0 ? 'active' : ''}" data-id="${p.id}">
-        <i class="lucide-printer"></i> ${p.name.split(' ')[0]} ${p.name.split(' ')[1] || ''}
-      </button>
-    `).join('');
+  // 1. Render Product Selector Tabs
+  function renderTabs() {
+    if (!tabsContainer) return;
+    tabsContainer.innerHTML = SNAP_PRODUCTS.map(p => {
+      const activeClass = p.id === currentProductId ? 'active' : '';
+      const iconClass = productIcons[p.id] || 'fa-solid fa-print';
+      return `
+        <button class="calc-tab-btn ${activeClass}" data-id="${p.id}">
+          <i class="${iconClass}"></i> ${p.name}
+        </button>
+      `;
+    }).join('');
 
-    calcTabsContainer.querySelectorAll('.calc-tab-btn').forEach(btn => {
+    const tabBtns = tabsContainer.querySelectorAll('.calc-tab-btn');
+    tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        calcTabsContainer.querySelectorAll('.calc-tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
         currentProductId = btn.dataset.id;
-        renderCalculatorForm(currentProductId);
+        selectedMaterialIndex = 0;
+        selectedFinishingIndex = 0;
+        renderTabs();
+        renderForm();
+        calculatePrice();
       });
     });
   }
 
-  // Render Dynamic Inputs Form based on selected product
-  function renderCalculatorForm(productId) {
-    const product = window.SNAP_PRODUCTS.find(p => p.id === productId);
-    if (!product) return;
+  // 2. Render Form Inputs for Selected Product
+  function renderForm() {
+    if (!formContainer) return;
+    const prod = SNAP_PRODUCTS.find(p => p.id === currentProductId);
+    if (!prod) return;
 
-    let formHTML = '';
+    let html = ``;
 
-    // If Area-based (e.g. Banner)
-    if (product.calcType === 'area') {
-      formHTML += `
-        <div class="calc-form-group">
-          <label class="calc-label">Ukuran Banner (Panjang x Lebar dalam Meter)</label>
-          <div class="calc-dimen-grid">
-            <div>
-              <span class="calc-label" style="font-size:0.8rem; color:var(--text-muted);">Panjang (m)</span>
-              <input type="number" id="calc-width" class="calc-input" value="2" min="0.5" step="0.5">
-            </div>
-            <div>
-              <span class="calc-label" style="font-size:0.8rem; color:var(--text-muted);">Lebar (m)</span>
-              <input type="number" id="calc-height" class="calc-input" value="1" min="0.5" step="0.5">
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // Material Selector
-    formHTML += `
+    // Material Dropdown
+    html += `
       <div class="calc-form-group">
-        <label class="calc-label" for="calc-material">Pilihan Bahan / Kertas</label>
-        <select id="calc-material" class="calc-select">
-          ${product.materials.map((m, i) => `<option value="${i}">${m}</option>`).join('')}
+        <label class="calc-label">Pilihan Bahan / Kertas</label>
+        <select id="calc-material-select" class="calc-select">
+          ${prod.materials.map((m, idx) => `<option value="${idx}">${m}</option>`).join('')}
         </select>
       </div>
     `;
 
-    // Finishing Selector
-    if (product.finishings && product.finishings.length > 0) {
-      formHTML += `
+    // Dimension vs Quantity Inputs
+    if (prod.calcType === 'area') {
+      html += `
+        <div class="grid-2">
+          <div class="calc-form-group">
+            <label class="calc-label">Panjang (Meter)</label>
+            <input type="number" id="calc-input-width" class="calc-input" value="${inputWidth}" min="0.5" step="0.1">
+          </div>
+          <div class="calc-form-group">
+            <label class="calc-label">Lebar (Meter)</label>
+            <input type="number" id="calc-input-height" class="calc-input" value="${inputHeight}" min="0.5" step="0.1">
+          </div>
+        </div>
         <div class="calc-form-group">
-          <label class="calc-label" for="calc-finishing">Pilihan Finishing / Pemotongan</label>
-          <select id="calc-finishing" class="calc-select">
-            ${product.finishings.map((f, i) => `<option value="${i}">${f}</option>`).join('')}
+          <label class="calc-label">Jumlah Cetak (Pcs/Lembar)</label>
+          <input type="number" id="calc-input-qty" class="calc-input" value="${inputQty}" min="1">
+        </div>
+      `;
+    } else {
+      html += `
+        <div class="calc-form-group">
+          <label class="calc-label">Jumlah Order (${prod.unit})</label>
+          <input type="number" id="calc-input-qty" class="calc-input" value="${inputQty}" min="1">
+        </div>
+      `;
+    }
+
+    // Finishing Options
+    if (prod.finishing && prod.finishing.length > 0) {
+      html += `
+        <div class="calc-form-group">
+          <label class="calc-label">Finishing Tambahan</label>
+          <select id="calc-finishing-select" class="calc-select">
+            ${prod.finishing.map((f, idx) => `<option value="${idx}">${f}</option>`).join('')}
           </select>
         </div>
       `;
     }
 
-    // Quantity Input
-    formHTML += `
-      <div class="calc-form-group">
-        <label class="calc-label" for="calc-qty">Jumlah Pesanan (${product.unit})</label>
-        <input type="number" id="calc-qty" class="calc-input" value="${product.minOrder}" min="${product.minOrder}" step="1">
-      </div>
-    `;
+    formContainer.innerHTML = html;
 
-    // Design Help Radio
-    formHTML += `
-      <div class="calc-form-group">
-        <label class="calc-label">Bantuan Desain Grafis</label>
-        <div style="display:flex; gap:1.5rem; margin-top:0.3rem;">
-          <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.9rem;">
-            <input type="radio" name="calc-design" value="ready" checked> File Desain Sudah Ada
-          </label>
-          <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.9rem;">
-            <input type="radio" name="calc-design" value="help"> Perlu Bantuan Desain (+Rp 25.000)
-          </label>
-        </div>
-      </div>
-    `;
+    // Attach Event Listeners
+    const matSelect = document.getElementById('calc-material-select');
+    if (matSelect) {
+      matSelect.addEventListener('change', (e) => {
+        selectedMaterialIndex = parseInt(e.target.value);
+        calculatePrice();
+      });
+    }
 
-    calcFormContainer.innerHTML = formHTML;
+    const finSelect = document.getElementById('calc-finishing-select');
+    if (finSelect) {
+      finSelect.addEventListener('change', (e) => {
+        selectedFinishingIndex = parseInt(e.target.value);
+        calculatePrice();
+      });
+    }
 
-    // Attach Change Listeners for Instant Calculation
-    calcFormContainer.querySelectorAll('input, select').forEach(el => {
-      el.addEventListener('input', calculatePrice);
-      el.addEventListener('change', calculatePrice);
-    });
+    const widthInp = document.getElementById('calc-input-width');
+    if (widthInp) {
+      widthInp.addEventListener('input', (e) => {
+        inputWidth = parseFloat(e.target.value) || 0;
+        calculatePrice();
+      });
+    }
 
-    calculatePrice();
+    const heightInp = document.getElementById('calc-input-height');
+    if (heightInp) {
+      heightInp.addEventListener('input', (e) => {
+        inputHeight = parseFloat(e.target.value) || 0;
+        calculatePrice();
+      });
+    }
+
+    const qtyInp = document.getElementById('calc-input-qty');
+    if (qtyInp) {
+      qtyInp.addEventListener('input', (e) => {
+        inputQty = parseInt(e.target.value) || 1;
+        calculatePrice();
+      });
+    }
   }
 
-  // Calculation Logic Engine
+  // 3. Price Math Engine
   function calculatePrice() {
-    const product = window.SNAP_PRODUCTS.find(p => p.id === currentProductId);
-    if (!product) return;
-
-    let qty = parseInt(document.getElementById('calc-qty')?.value || product.minOrder, 10);
-    if (isNaN(qty) || qty < 1) qty = 1;
-
-    const materialIdx = parseInt(document.getElementById('calc-material')?.value || 0, 10);
-    const finishingIdx = parseInt(document.getElementById('calc-finishing')?.value || 0, 10);
-    const designRadio = document.querySelector('input[name="calc-design"]:checked')?.value || 'ready';
-
-    let unitBase = product.priceStarting;
-    // Add material modifier
-    unitBase += materialIdx * (unitBase * 0.15);
-    // Add finishing modifier
-    unitBase += finishingIdx * 2000;
+    const prod = SNAP_PRODUCTS.find(p => p.id === currentProductId);
+    if (!prod) return;
 
     let subtotal = 0;
-    let specText = `${product.materials[materialIdx] || ''}`;
+    let qtyUnitText = '';
+    let specText = prod.materials[selectedMaterialIndex] || '';
 
-    if (product.calcType === 'area') {
-      const width = parseFloat(document.getElementById('calc-width')?.value || 1);
-      const height = parseFloat(document.getElementById('calc-height')?.value || 1);
-      const area = Math.max(0.5, width * height);
-      subtotal = area * unitBase * qty;
-      specText += ` (${width}m x ${height}m = ${area.toFixed(1)}m²)`;
+    if (prod.finishing && prod.finishing[selectedFinishingIndex]) {
+      specText += ` + ${prod.finishing[selectedFinishingIndex]}`;
+    }
+
+    if (prod.calcType === 'area') {
+      const areaPerUnit = Math.max(0.5, inputWidth * inputHeight); // min 0.5m2
+      const totalArea = areaPerUnit * inputQty;
+      subtotal = totalArea * prod.priceStarting;
+      qtyUnitText = `${inputQty} Pcs (${inputWidth}m x ${inputHeight}m = ${totalArea.toFixed(1)} m²)`;
     } else {
-      subtotal = unitBase * qty;
+      subtotal = inputQty * prod.priceStarting;
+      qtyUnitText = `${inputQty} ${prod.unit}`;
     }
 
-    if (designRadio === 'help') {
-      subtotal += 25000;
+    // Bulk Discount Logic
+    let discountPct = 0;
+    if (inputQty >= 50) discountPct = 15;
+    else if (inputQty >= 20) discountPct = 10;
+    else if (inputQty >= 10) discountPct = 5;
+
+    const discountAmount = subtotal * (discountPct / 100);
+    const finalTotal = Math.max(0, subtotal - discountAmount);
+
+    // Update Summary UI
+    if (summaryProduct) summaryProduct.textContent = prod.name;
+    if (summarySpec) summarySpec.textContent = specText;
+    if (summaryQty) summaryQty.textContent = qtyUnitText;
+    if (summaryDiscount) {
+      summaryDiscount.textContent = discountPct > 0 ? `Hemat ${discountPct}% (-Rp ${discountAmount.toLocaleString('id-ID')})` : 'Harga Reguler';
     }
+    if (totalAmount) totalAmount.textContent = `Rp ${finalTotal.toLocaleString('id-ID')}`;
 
-    // Bulk Discount
-    let discountPercent = 0;
-    if (qty >= 100) discountPercent = 0.15;
-    else if (qty >= 50) discountPercent = 0.10;
-    else if (qty >= 20) discountPercent = 0.05;
+    // Update WA Button Link
+    if (btnOrderWA) {
+      btnOrderWA.onclick = () => {
+        const fileInfo = uploadedFileName ? `\n• File Desain: *${uploadedFileName}*` : '';
+        const msg = `Halo Snaprint Bekasi! 👋
+Saya bermaksud order cetak melalui website:
 
-    const discountAmount = subtotal * discountPercent;
-    const finalTotal = Math.round(subtotal - discountAmount);
+📌 *RINCIAN ORDER:*
+• Produk: *${prod.name}*
+• Bahan & Spec: *${specText}*
+• Jumlah Order: *${qtyUnitText}*
+• Estimasi Biaya: *Rp ${finalTotal.toLocaleString('id-ID')}*${fileInfo}
 
-    // Format Rupiah
-    const formatIDR = (num) => 'Rp ' + num.toLocaleString('id-ID');
+Mohon diproses ya admin. Terima kasih!`;
 
-    totalAmountEl.textContent = formatIDR(finalTotal);
-    summaryProductEl.textContent = product.name;
-    summarySpecEl.textContent = specText;
-    summaryQtyEl.textContent = `${qty} ${product.unit}`;
-    summaryDiscountEl.textContent = discountPercent > 0 ? `${discountPercent * 100}% Grosir` : 'Tidak Ada';
-
-    // Store order payload for WA Button
-    btnOrderWa.onclick = () => sendOrderToWhatsApp(product, qty, specText, finalTotal, designRadio);
+        window.open(`https://wa.me/6281311933172?text=${encodeURIComponent(msg)}`, '_blank');
+      };
+    }
   }
 
-  // Drag & Drop File Simulator
+  // 4. Drag & Drop File Upload Handler
   if (fileDropZone && fileInputHidden) {
     fileDropZone.addEventListener('click', () => fileInputHidden.click());
-
+    
     fileDropZone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      fileDropZone.classList.add('dragover');
+      fileDropZone.style.borderColor = 'var(--primary-blue)';
     });
 
-    fileDropZone.addEventListener('dragleave', () => fileDropZone.classList.remove('dragover'));
+    fileDropZone.addEventListener('dragleave', () => {
+      fileDropZone.style.borderColor = 'var(--border-color)';
+    });
 
     fileDropZone.addEventListener('drop', (e) => {
       e.preventDefault();
-      fileDropZone.classList.remove('dragover');
-      if (e.dataTransfer.files.length) {
-        handleFileSelection(e.dataTransfer.files[0]);
+      fileDropZone.style.borderColor = 'var(--border-color)';
+      if (e.dataTransfer.files.length > 0) {
+        handleFileSelect(e.dataTransfer.files[0]);
       }
     });
 
     fileInputHidden.addEventListener('change', (e) => {
-      if (e.target.files.length) {
-        handleFileSelection(e.target.files[0]);
+      if (e.target.files.length > 0) {
+        handleFileSelect(e.target.files[0]);
       }
     });
   }
 
-  function handleFileSelection(file) {
-    currentFile = file;
-    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-    fileStatusText.innerHTML = `
-      <strong style="color:var(--primary-blue)">📄 ${file.name}</strong> (${fileSizeMB} MB)
-      <br><span class="file-status-badge">✓ Format Valid & Resolusi Siap Cetak!</span>
-    `;
+  function handleFileSelect(file) {
+    uploadedFileName = file.name;
+    if (fileStatusText) {
+      fileStatusText.innerHTML = `
+        <div style="color:var(--friendly-emerald); font-weight:700; margin-top:0.5rem;">
+          <i class="fa-solid fa-circle-check"></i> File Terpilih: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+        </div>
+      `;
+    }
+    calculatePrice();
   }
 
-  // Format & Redirect WhatsApp Message
-  function sendOrderToWhatsApp(product, qty, specText, total, designRadio) {
-    const waNumber = '6281311933172';
-    const designText = designRadio === 'help' ? 'Butuh Bantuan Desain (+Rp 25rb)' : 'File Siap Cetak (Sudah Ada)';
-    const fileInfo = currentFile ? `\n- File Lampiran: ${currentFile.name}` : '';
-
-    const message = `Halo Snaprint Digital Printing Bekasi! 👋
-Saya mau pesan cetak online melalui Website Snaprint:
-
-📋 *DETAIL PESANAN:*
-• Produk: *${product.name}*
-• Spesifikasi: ${specText}
-• Jumlah: *${qty} ${product.unit}*
-• Bantuan Desain: ${designText}${fileInfo}
-• *Estimasi Total: Rp ${total.toLocaleString('id-ID')}*
-
-Mohon konfirmasi ketersediaan dan petunjuk pembayaran/proses cetak selanjutnya ya. Terima kasih!`;
-
-    const encodedMsg = encodeURIComponent(message);
-    window.open(`https://wa.me/${waNumber}?text=${encodedMsg}`, '_blank');
-  }
-
-  // Initialize
-  renderCalculatorTabs();
-  renderCalculatorForm(currentProductId);
+  // Initial Run
+  renderTabs();
+  renderForm();
+  calculatePrice();
 });
