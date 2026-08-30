@@ -1,64 +1,19 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Franchise & Kemitraan Bisnis - Snaprint Digital Printing</title>
-  <meta name="description" content="Peluang bisnis franchise & kemitraan digital printing Snaprint. Dapatkan ROI cepat, dukungan mesin canggih, training SDM, dan sistem cetak online terintegrasi! WA CS Franchise: 0877-8104-7453.">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
+<?php
+/**
+ * Template Name: Franchise & Kemitraan
+ *
+ * @package Snaprint
+ * @version 1.0.0
+ */
 
-  <!-- Top Header Ticker Bar -->
-  <div class="announcement-bar">
-    <div class="announcement-content">
-      <span class="announcement-tag">PELUANG BISNIS</span>
-      <span><i class="fa-solid fa-briefcase"></i> Buka Outlet Digital Printing Snaprint di Kota Anda! Dapatkan Konsultasi Franchise Gratis via WA <strong>0877-8104-7453</strong></span>
-    </div>
-  </div>
-
-  <!-- Header Navbar -->
-  <header class="navbar">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <div class="logo-badge">S</div>
-        <div class="logo-text">
-          <span class="logo-main">SNAPRINT</span>
-          <span class="logo-sub">DIGITAL PRINTING</span>
-        </div>
-      </a>
-
-      <nav>
-        <ul class="nav-menu" id="nav-menu">
-          <li><a href="index.html" class="nav-link">Beranda</a></li>
-          <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
-          <li><a href="layanan.html" class="nav-link">Layanan & Produk</a></li>
-          <li><a href="kalkulator.html" class="nav-link">Kalkulator Cetak</a></li>
-          <li><a href="panduan.html" class="nav-link">Panduan File</a></li>
-          <li><a href="galeri.html" class="nav-link">Galeri Toko</a></li>
-          <li><a href="franchise.html" class="nav-link active">Franchise</a></li>
-          <li><a href="kontak.html" class="nav-link">Kontak & Lokasi</a></li>
-        </ul>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="https://wa.me/6287781047453?text=Halo%20Snaprint!%20Saya%20tertarik%20konsultasi%20franchise" target="_blank" class="btn btn-whatsapp btn-sm">
-          <i class="fa-brands fa-whatsapp"></i> Chat Franchise WA
-        </a>
-        <button type="button" class="mobile-nav-toggle" id="mobile-toggle">☰</button>
-      </div>
-    </div>
-  </header>
+get_header();
+?>
 
   <!-- Page Banner -->
   <section class="page-banner">
     <div class="container">
       <div class="breadcrumb">
-        <a href="index.html">Beranda</a>
+        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Beranda</a>
         <span class="breadcrumb-separator">/</span>
         <span>Franchise & Kemitraan</span>
       </div>
@@ -224,7 +179,7 @@
               <select id="fran-budget" class="calc-select" required>
                 <option value="Rp 50jt - 100jt">Rp 50 Juta - 100 Juta</option>
                 <option value="Rp 100jt - 200jt" selected>Rp 100 Juta - 200 Juta</option>
-                <option value="> Rp 200jt">> Rp 200 Juta</option>
+                <option value="> Rp 200jt">&gt; Rp 200 Juta</option>
               </select>
             </div>
           </div>
@@ -246,67 +201,7 @@
     </div>
   </section>
 
-  <!-- Pro Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="grid-4" style="margin-bottom:2.5rem;">
-        <div>
-          <div class="logo" style="margin-bottom:0.85rem;">
-            <div class="logo-badge">S</div>
-            <div class="logo-text">
-              <span class="logo-main" style="color:#FFFFFF;">SNAPRINT</span>
-              <span class="logo-sub" style="color:var(--electric-azure);">DIGITAL PRINTING</span>
-            </div>
-          </div>
-          <p style="font-size:0.875rem; line-height:1.6; margin-bottom:1.1rem; color:#94A3B8;">
-            Pusat percetakan media promosi & operasional bisnis terpercaya di Bekasi.
-          </p>
-          <a href="https://wa.me/6287781047453" target="_blank" class="btn btn-whatsapp btn-sm"><i class="fa-brands fa-whatsapp"></i> WA Franchise: 0877-8104-7453</a>
-        </div>
-
-        <div>
-          <h4>Hirarki Navigasi</h4>
-          <ul class="footer-links">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="tentang.html">Tentang Kami</a></li>
-            <li><a href="layanan.html">Katalog Layanan</a></li>
-            <li><a href="kalkulator.html">Kalkulator Cetak</a></li>
-            <li><a href="panduan.html">Panduan File</a></li>
-            <li><a href="galeri.html">Galeri Toko</a></li>
-            <li><a href="franchise.html">Franchise Kemitraan</a></li>
-            <li><a href="kontak.html">Kontak & Lokasi</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>Jam Operasional</h4>
-          <ul class="footer-links" style="font-size:0.875rem;">
-            <li><strong>Senin - Sabtu:</strong> 08.00 - 21.00 WIB</li>
-            <li><strong>Minggu & Libur:</strong> WhatsApp Chat Only</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>Lokasi Toko</h4>
-          <p style="font-size:0.875rem; margin-bottom:0.85rem; color:#94A3B8;"><i class="fa-solid fa-location-dot"></i> Jl. Mustika Jaya, Lambang Sari, Tambun Selatan, Bekasi.</p>
-          <a href="kontak.html" class="btn btn-secondary btn-sm" style="color:var(--text-main);"><i class="fa-solid fa-map"></i> Lihat Peta Google Maps</a>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2026 <strong>Snaprint Digital Printing Bekasi</strong>. Enterprise Corporate Profile & Franchise System.</p>
-      </div>
-    </div>
-  </footer>
-
-  <a href="https://wa.me/6287781047453?text=Halo%20Snaprint!%20Saya%20tertarik%20kemitraan%20franchise" target="_blank" class="floating-wa-btn">
-    <i class="fa-brands fa-whatsapp"></i><span class="wa-badge">1</span>
-  </a>
-
-  <script src="js/main.js"></script>
   <script>
-    if (window.lucide) lucide.createIcons();
-
     document.addEventListener('DOMContentLoaded', () => {
       const packageBtns = document.querySelectorAll('.btn-order-package');
       const selectEl = document.getElementById('fran-package');
@@ -323,11 +218,11 @@
       if (formEl) {
         formEl.addEventListener('submit', (e) => {
           e.preventDefault();
-          const name = document.getElementById('fran-name').value;
-          const phone = document.getElementById('fran-phone').value;
-          const city = document.getElementById('fran-city').value;
-          const budget = document.getElementById('fran-budget').value;
-          const pkg = document.getElementById('fran-package').value;
+          const name = document.getElementById('fran-name')?.value;
+          const phone = document.getElementById('fran-phone')?.value;
+          const city = document.getElementById('fran-city')?.value;
+          const budget = document.getElementById('fran-budget')?.value;
+          const pkg = document.getElementById('fran-package')?.value;
 
           const waMsg = `Halo Snaprint Franchise Center! 👋
 Saya bermaksud mengajukan konsultasi Kemitraan / Franchise:
@@ -341,10 +236,12 @@ Saya bermaksud mengajukan konsultasi Kemitraan / Franchise:
 
 Mohon dikirimkan proposal proyeksi ROI & balik modalnya ya. Terima kasih!`;
 
-          window.open(`https://wa.me/6287781047453?text=${encodeURIComponent(waMsg)}`, '_blank');
+          const waNumber = (window.snaprintData && window.snaprintData.waFranchise) || '6287781047453';
+          window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`, '_blank');
         });
       }
     });
   </script>
-</body>
-</html>
+
+<?php
+get_footer();

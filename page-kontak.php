@@ -1,64 +1,19 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kontak & Lokasi Toko - Snaprint Digital Printing Bekasi</title>
-  <meta name="description" content="Hubungi Snaprint Digital Printing Bekasi via WA 0813-1193-3172. Alamat workshop fisik: Jl. Mustika Jaya, Lambang Sari, Tambun Selatan, Bekasi. Peta Google Maps & Jam buka.">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
+<?php
+/**
+ * Template Name: Kontak & Lokasi
+ *
+ * @package Snaprint
+ * @version 1.0.0
+ */
 
-  <!-- Top Header Ticker Bar -->
-  <div class="announcement-bar">
-    <div class="announcement-content">
-      <span class="announcement-tag">KONTAK BEKASI</span>
-      <span>Konsultasi Cetak & Order Fast Response via WA 0813-1193-3172 (Jam Operasional: 08.00 - 21.00 WIB)</span>
-    </div>
-  </div>
-
-  <!-- Header Navbar -->
-  <header class="navbar">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <div class="logo-badge">S</div>
-        <div class="logo-text">
-          <span class="logo-main">SNAPRINT</span>
-          <span class="logo-sub">DIGITAL PRINTING</span>
-        </div>
-      </a>
-
-      <nav>
-        <ul class="nav-menu" id="nav-menu">
-          <li><a href="index.html" class="nav-link">Beranda</a></li>
-          <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
-          <li><a href="layanan.html" class="nav-link">Layanan & Produk</a></li>
-          <li><a href="kalkulator.html" class="nav-link">Kalkulator Cetak</a></li>
-          <li><a href="panduan.html" class="nav-link">Panduan File</a></li>
-          <li><a href="galeri.html" class="nav-link">Galeri Toko</a></li>
-          <li><a href="franchise.html" class="nav-link">Franchise</a></li>
-          <li><a href="kontak.html" class="nav-link active">Kontak & Lokasi</a></li>
-        </ul>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="https://wa.me/6281311933172?text=Halo%20Snaprint!%20Saya%20mau%20tanya" target="_blank" class="btn btn-whatsapp btn-sm">
-          <i class="fa-brands fa-whatsapp"></i> Chat WA
-        </a>
-        <button type="button" class="mobile-nav-toggle" id="mobile-toggle">☰</button>
-      </div>
-    </div>
-  </header>
+get_header();
+?>
 
   <!-- Page Banner -->
   <section class="page-banner">
     <div class="container">
       <div class="breadcrumb">
-        <a href="index.html">Beranda</a>
+        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Beranda</a>
         <span class="breadcrumb-separator">/</span>
         <span>Kontak & Lokasi</span>
       </div>
@@ -119,7 +74,7 @@
 
           <!-- Storefront Thumbnail -->
           <div style="border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--border-color); box-shadow:var(--card-shadow);">
-            <img src="assets/images/snaprint-storefront.png" alt="Toko Snaprint Bekasi" style="width:100%; display:block;">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/snaprint-storefront.png' ); ?>" alt="Toko Snaprint Bekasi" style="width:100%; display:block;">
           </div>
         </div>
 
@@ -180,64 +135,5 @@
     </div>
   </section>
 
-  <!-- Pro Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="grid-4" style="margin-bottom:2.5rem;">
-        <div>
-          <div class="logo" style="margin-bottom:0.85rem;">
-            <div class="logo-badge">S</div>
-            <div class="logo-text">
-              <span class="logo-main" style="color:#FFFFFF;">SNAPRINT</span>
-              <span class="logo-sub" style="color:var(--electric-azure);">DIGITAL PRINTING</span>
-            </div>
-          </div>
-          <p style="font-size:0.875rem; line-height:1.6; margin-bottom:1.1rem; color:#94A3B8;">
-            Pusat percetakan media promosi & operasional bisnis terpercaya di Bekasi.
-          </p>
-          <a href="https://wa.me/6281311933172" target="_blank" class="btn btn-whatsapp btn-sm"><i class="fa-brands fa-whatsapp"></i> WA: 0813-1193-3172</a>
-        </div>
-
-        <div>
-          <h4>Hirarki Navigasi</h4>
-          <ul class="footer-links">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="tentang.html">Tentang Kami</a></li>
-            <li><a href="layanan.html">Katalog Layanan</a></li>
-            <li><a href="kalkulator.html">Kalkulator Cetak</a></li>
-            <li><a href="panduan.html">Panduan File</a></li>
-            <li><a href="galeri.html">Galeri Toko</a></li>
-            <li><a href="franchise.html">Franchise Kemitraan</a></li>
-            <li><a href="kontak.html">Kontak & Lokasi</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>Jam Operasional</h4>
-          <ul class="footer-links" style="font-size:0.875rem;">
-            <li><strong>Senin - Sabtu:</strong> 08.00 - 21.00 WIB</li>
-            <li><strong>Minggu & Libur:</strong> WhatsApp Chat Only</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>Lokasi Toko</h4>
-          <p style="font-size:0.875rem; margin-bottom:0.85rem; color:#94A3B8;"><i class="fa-solid fa-location-dot"></i> Jl. Mustika Jaya, Lambang Sari, Tambun Selatan, Bekasi.</p>
-          <a href="kontak.html" class="btn btn-secondary btn-sm" style="color:var(--text-main);"><i class="fa-solid fa-map"></i> Lihat Peta Google Maps</a>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2026 <strong>Snaprint Digital Printing Bekasi</strong>. Enterprise Corporate Profile.</p>
-      </div>
-    </div>
-  </footer>
-
-  <a href="https://wa.me/6281311933172?text=Halo%20Snaprint!%20Saya%20mau%20tanya" target="_blank" class="floating-wa-btn">
-    <i class="fa-brands fa-whatsapp"></i><span class="wa-badge">1</span>
-  </a>
-
-  <script src="js/main.js"></script>
-  <script>if (window.lucide) lucide.createIcons();</script>
-</body>
-</html>
+<?php
+get_footer();

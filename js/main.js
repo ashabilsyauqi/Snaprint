@@ -5,15 +5,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Highlight Active Nav Item based on current Page URL
-  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  const currentPath = window.location.pathname.replace(/\/$/, '').split('/').pop() || 'index.html';
   const navLinks = document.querySelectorAll('.nav-link');
 
   navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+    const href = link.getAttribute('href') || '';
+    const cleanHref = href.replace(/\/$/, '').split('/').pop() || 'index.html';
+    if (cleanHref === currentPath || (currentPath === '' && (cleanHref === 'index.html' || cleanHref === ''))) {
       link.classList.add('active');
-    } else {
-      link.classList.remove('active');
     }
   });
 
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Contact Form Handler (on kontak.html)
+  // 4. Contact Form Handler (on kontak.html / Kontak page)
   const contactForm = document.getElementById('contact-form');
   const contactAlert = document.getElementById('contact-alert');
 
@@ -75,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       setTimeout(() => {
         const waText = `Halo Snaprint Bekasi! Saya ${name} (${phone}). Saya bermaksud konsultasi:\n${message}`;
-        window.open(`https://wa.me/6281311933172?text=${encodeURIComponent(waText)}`, '_blank');
+        const waNumber = (window.snaprintData && window.snaprintData.waCs) || '6281311933172';
+        window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`, '_blank');
       }, 1000);
     });
   }
@@ -90,9 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (galleryItems.length > 0 && galleryModal) {
     galleryItems.forEach(item => {
       item.addEventListener('click', () => {
-        const imgSrc = item.getAttribute('data-src') || item.querySelector('img').src;
+        const imgSrc = item.getAttribute('data-src') || item.querySelector('img')?.src;
         const title = item.getAttribute('data-title') || 'Showcase Snaprint Digital Printing Bekasi';
-        if (modalImg) modalImg.src = imgSrc;
+        if (modalImg && imgSrc) modalImg.src = imgSrc;
         if (modalCaption) modalCaption.textContent = title;
         galleryModal.classList.add('active');
       });
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => revealObserver.observe(el));
   }
 
-  // 8. Franchise Lead Hook Popup Modal Controller (Franchise CS WA: +62 877-8104-7453 / 6287781047453)
+  // 8. Franchise Lead Hook Popup Modal Controller (Franchise CS WA: +62 877-8104-7453)
   const franchisePopupModal = document.getElementById('franchise-popup-modal');
   const franchisePopupClose = document.getElementById('franchise-popup-close');
   const openFranchiseBtns = document.querySelectorAll('#btn-open-franchise-popup, .trigger-franchise-popup');
@@ -146,7 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (franchisePopupModal) {
     // Show automatically after 5s on homepage if not shown in current session
     const hasSeenPopup = sessionStorage.getItem('snaprint-franchise-popup-seen');
-    if (!hasSeenPopup && (currentPath === 'index.html' || currentPath === '')) {
+    const isHomePage = currentPath === 'index.html' || currentPath === '' || window.location.pathname === '/' || document.body.classList.contains('home');
+    if (!hasSeenPopup && isHomePage) {
       setTimeout(() => {
         franchisePopupModal.classList.add('active');
         sessionStorage.setItem('snaprint-franchise-popup-seen', 'true');
@@ -188,8 +189,8 @@ Saya bermaksud meminta Proposal Kemitraan Franchise Snaprint:
 Mohon rincian paket kemitraan & analisis ROI dikirimkan ya. Terima kasih!`;
 
         franchisePopupModal.classList.remove('active');
-        // Franchise specific WA number: +62 877-8104-7453
-        window.open(`https://wa.me/6287781047453?text=${encodeURIComponent(waText)}`, '_blank');
+        const waFranchise = (window.snaprintData && window.snaprintData.waFranchise) || '6287781047453';
+        window.open(`https://wa.me/${waFranchise}?text=${encodeURIComponent(waText)}`, '_blank');
       });
     }
   }
