@@ -1,5 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/nexaeraw/public_html
+    - export DEPLOYPATH=/home/nexaeraw/public_html/wp-content/themes/snaprint
+    - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH
