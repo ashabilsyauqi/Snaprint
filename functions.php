@@ -45,6 +45,11 @@ function snaprint_theme_setup() {
         'script',
     ) );
 
+    // Gutenberg Core Supports
+    add_theme_support( 'align-wide' );
+    add_theme_support( 'wp-block-styles' );
+    add_theme_support( 'editor-styles' );
+
     // Responsive embedded content
     add_theme_support( 'responsive-embeds' );
 
