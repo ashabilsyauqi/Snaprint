@@ -282,6 +282,154 @@ get_header();
           </div>
         </div>
       </div>
+  <!-- Section: Tips & Artikel Percetakan Terbaru (SEO Blog) -->
+  <section class="section" style="background:var(--bg-card); border-top:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <div class="badge-pill azure">Blog & Wawasan Cetak</div>
+        <h2 class="section-title">Tips & Panduan <span class="blue-gradient">Percetakan Digital</span></h2>
+        <p class="section-desc">Pelajari tips memilih bahan, standarisasi warna CMYK, dan strategi branding visual untuk bisnis dan UMKM Anda.</p>
+      </div>
+
+      <div class="grid-3">
+        <?php
+        $latest_posts = new WP_Query( array(
+            'posts_per_page'      => 3,
+            'post_status'         => 'publish',
+            'ignore_sticky_posts' => 1,
+        ) );
+
+        if ( $latest_posts->have_posts() ) :
+            while ( $latest_posts->have_posts() ) :
+                $latest_posts->the_post();
+                $categories = get_the_category();
+                $cat_name = ! empty( $categories ) ? $categories[0]->name : 'Percetakan';
+                $reading_time = snaprint_reading_time( get_the_ID() );
+                ?>
+                <article class="product-card scroll-reveal-up" style="display:flex; flex-direction:column; height:100%;">
+                  <div class="product-img-wrapper" style="height:210px; overflow:hidden; position:relative; background:var(--navy-dark);">
+                    <?php if ( has_post_thumbnail() ) : ?>
+                      <?php the_post_thumbnail( 'medium_large', array( 'style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease;' ) ); ?>
+                    <?php else : ?>
+                      <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/snaprint-storefront.png' ); ?>" alt="<?php the_title_attribute(); ?>" style="width:100%; height:100%; object-fit:cover;">
+                    <?php endif; ?>
+                    <span class="product-badge" style="position:absolute; top:12px; left:12px; margin:0;"><?php echo esc_html( $cat_name ); ?></span>
+                  </div>
+
+                  <div class="product-body" style="display:flex; flex-direction:column; flex:1; padding:1.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.75rem; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                      <span><i class="fa-regular fa-calendar"></i> <?php echo get_the_date(); ?></span>
+                      <span>•</span>
+                      <span><i class="fa-regular fa-clock"></i> <?php echo esc_html( $reading_time ); ?> mnt baca</span>
+                    </div>
+
+                    <h3 class="product-title" style="font-size:1.15rem; line-height:1.4; margin-bottom:0.75rem; flex-shrink:0;">
+                      <a href="<?php the_permalink(); ?>" style="color:inherit; text-decoration:none; transition:color 0.2s;"><?php the_title(); ?></a>
+                    </h3>
+
+                    <p class="product-desc" style="font-size:0.9rem; line-height:1.6; color:var(--text-muted); margin-bottom:1.25rem; flex-grow:1;">
+                      <?php echo wp_trim_words( get_the_excerpt(), 16 ); ?>
+                    </p>
+
+                    <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
+                      <a href="<?php the_permalink(); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue); display:inline-flex; align-items:center; gap:0.4rem;">
+                        Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+                <?php
+            endwhile;
+            wp_reset_postdata();
+        else :
+            ?>
+            <!-- Fallback Mock Cards if no posts published yet -->
+            <article class="product-card scroll-reveal-up" style="display:flex; flex-direction:column; height:100%;">
+              <div class="product-img-wrapper" style="height:210px; overflow:hidden; position:relative;">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/snaprint-storefront.png' ); ?>" alt="Bahan Flexi" style="width:100%; height:100%; object-fit:cover;">
+                <span class="product-badge" style="position:absolute; top:12px; left:12px; margin:0;">Bahan Spanduk</span>
+              </div>
+              <div class="product-body" style="display:flex; flex-direction:column; flex:1; padding:1.5rem;">
+                <div style="display:flex; align-items:center; gap:0.75rem; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                  <span><i class="fa-regular fa-calendar"></i> <?php echo date( 'd M Y' ); ?></span>
+                  <span>•</span>
+                  <span><i class="fa-regular fa-clock"></i> 4 mnt baca</span>
+                </div>
+                <h3 class="product-title" style="font-size:1.15rem; line-height:1.4; margin-bottom:0.75rem;">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" style="color:inherit; text-decoration:none;">Panduan Memilih Bahan Banner: Flexi Standard vs Korchin High-Res</a>
+                </h3>
+                <p class="product-desc" style="font-size:0.9rem; line-height:1.6; color:var(--text-muted); margin-bottom:1.25rem;">
+                  Ketahui perbedaan gramasi dan ketahanan cuaca antara bahan Flexi 280g dan Korchin 440g untuk promosi outdoor tahan lama.
+                </p>
+                <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue);">
+                    Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card scroll-reveal-up delay-1" style="display:flex; flex-direction:column; height:100%;">
+              <div class="product-img-wrapper" style="height:210px; overflow:hidden; position:relative;">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/snaprint-interior.png' ); ?>" alt="Stiker Custom" style="width:100%; height:100%; object-fit:cover;">
+                <span class="product-badge" style="position:absolute; top:12px; left:12px; margin:0;">Kemasan & Label</span>
+              </div>
+              <div class="product-body" style="display:flex; flex-direction:column; flex:1; padding:1.5rem;">
+                <div style="display:flex; align-items:center; gap:0.75rem; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                  <span><i class="fa-regular fa-calendar"></i> <?php echo date( 'd M Y' ); ?></span>
+                  <span>•</span>
+                  <span><i class="fa-regular fa-clock"></i> 3 mnt baca</span>
+                </div>
+                <h3 class="product-title" style="font-size:1.15rem; line-height:1.4; margin-bottom:0.75rem;">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" style="color:inherit; text-decoration:none;">Perbedaan Finishing Stiker: Kiss-Cut vs Die-Cut untuk Kemasan UMKM</a>
+                </h3>
+                <p class="product-desc" style="font-size:0.9rem; line-height:1.6; color:var(--text-muted); margin-bottom:1.25rem;">
+                  Panduan lengkap memilih jenis potongan stiker label produk makanan dan kosmetik agar lebih praktis saat proses labeling.
+                </p>
+                <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue);">
+                    Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card scroll-reveal-up delay-2" style="display:flex; flex-direction:column; height:100%;">
+              <div class="product-img-wrapper" style="height:210px; overflow:hidden; position:relative;">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/snaprint-facade.png' ); ?>" alt="Panduan Warna CMYK" style="width:100%; height:100%; object-fit:cover;">
+                <span class="product-badge" style="position:absolute; top:12px; left:12px; margin:0;">Teknis Cetak</span>
+              </div>
+              <div class="product-body" style="display:flex; flex-direction:column; flex:1; padding:1.5rem;">
+                <div style="display:flex; align-items:center; gap:0.75rem; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                  <span><i class="fa-regular fa-calendar"></i> <?php echo date( 'd M Y' ); ?></span>
+                  <span>•</span>
+                  <span><i class="fa-regular fa-clock"></i> 5 mnt baca</span>
+                </div>
+                <h3 class="product-title" style="font-size:1.15rem; line-height:1.4; margin-bottom:0.75rem;">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" style="color:inherit; text-decoration:none;">Standar Warna CMYK dan Resolusi 300 DPI: Kunci Cetak Tajam & Akurat</a>
+                </h3>
+                <p class="product-desc" style="font-size:0.9rem; line-height:1.6; color:var(--text-muted); margin-bottom:1.25rem;">
+                  Hindari hasil cetak buram atau warna pudar dengan menerapkan format warna CMYK dan resolusi minimal 300 DPI sebelum kirim file.
+                </p>
+                <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue);">
+                    Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+        <?php endif; ?>
+      </div>
+
+      <div style="text-align:center; margin-top:3rem;">
+        <?php
+        $blog_page_id = get_option( 'page_for_posts' );
+        $blog_url = $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/blog' );
+        ?>
+        <a href="<?php echo esc_url( $blog_url ); ?>" class="btn btn-secondary btn-lg" style="box-shadow:var(--card-shadow);">
+          <i class="fa-solid fa-newspaper"></i> Lihat Semua Artikel & Panduan Cetak
+        </a>
+      </div>
     </div>
   </section>
 

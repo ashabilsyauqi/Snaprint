@@ -34,6 +34,7 @@
             <li><a href="<?php echo esc_url( home_url( '/layanan' ) ); ?>">Katalog Layanan</a></li>
             <li><a href="<?php echo esc_url( home_url( '/kalkulator' ) ); ?>">Kalkulator Cetak</a></li>
             <li><a href="<?php echo esc_url( home_url( '/panduan' ) ); ?>">Panduan File</a></li>
+            <li><a href="<?php echo esc_url( home_url( '/blog' ) ); ?>">Blog & Artikel</a></li>
             <li><a href="<?php echo esc_url( home_url( '/galeri' ) ); ?>">Galeri Toko</a></li>
             <li><a href="<?php echo esc_url( home_url( '/franchise' ) ); ?>">Franchise Kemitraan</a></li>
             <li><a href="<?php echo esc_url( home_url( '/kontak' ) ); ?>">Kontak & Lokasi</a></li>
