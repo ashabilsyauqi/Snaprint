@@ -200,9 +200,11 @@ while ( have_posts() ) :
                       <h4 class="product-title" style="font-size:1rem; line-height:1.4; margin:0.4rem 0 0.8rem 0; flex-grow:1;">
                         <a href="<?php the_permalink(); ?>"><?php echo wp_trim_words( get_the_title(), 9 ); ?></a>
                       </h4>
-                      <a href="<?php the_permalink(); ?>" class="service-link" style="font-size:0.85rem; font-weight:700; color:var(--primary-blue); margin-top:auto;">
-                        Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
-                      </a>
+                      <div class="card-action-bar">
+                        <a href="<?php the_permalink(); ?>" class="btn-read-more">
+                          Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                      </div>
                     </div>
                   </div>
                   <?php

@@ -138,7 +138,7 @@ get_header();
   </section>
 
   <!-- Franchise Hook Banner Section -->
-  <section class="section" style="background:linear-gradient(135deg, #040914 0%, #0A192F 40%, #0F52BA 100%); color:#FFFFFF; border-y:2px solid rgba(0, 210, 255, 0.25);">
+  <section class="section" style="background:linear-gradient(135deg, #040914 0%, #0A192F 40%, #0F52BA 100%); color:#FFFFFF; border-top:2px solid rgba(0, 210, 255, 0.25); border-bottom:2px solid rgba(0, 210, 255, 0.25);">
     <div class="container">
       <div class="grid-2" style="align-items:center;">
         <div class="scroll-reveal-left">
@@ -182,61 +182,82 @@ get_header();
     </div>
   </section>
 
-  <!-- Interactive Mini Calculator Preview Section -->
-  <section class="section" style="background:var(--bg-secondary);">
+  <!-- Interactive Calculator Engine Section (Full Interactive Engine) -->
+  <section class="section" id="kalkulator" style="background:var(--bg-secondary);">
     <div class="container">
-      <div class="grid-2" style="align-items:center;">
-        <div class="scroll-reveal-left">
-          <div class="badge-pill azure">Kalkulator Cetak Instan</div>
-          <h2 class="section-title">Hitung Biaya Cetak Tanpa Ribet <span class="blue-gradient">Dalam 10 Detik</span></h2>
-          <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:1.25rem;">
-            Tidak perlu menunggu balasan admin lama! Sistem kalkulator otomatis Snaprint memungkinkan Anda memilih produk, menentukan ukuran, memilih bahan, dan melihat estimasi total harga secara instan.
-          </p>
-          <ul style="list-style:none; margin-bottom:1.75rem; display:flex; flex-direction:column; gap:0.65rem;">
-            <li style="display:flex; align-items:center; gap:0.6rem; font-weight:600;">
-              <span style="color:var(--friendly-emerald); font-size:1.1rem;"><i class="fa-solid fa-circle-check"></i></span> Perhitungan berdasarkan ukuran m² atau jumlah Qty
-            </li>
-            <li style="display:flex; align-items:center; gap:0.6rem; font-weight:600;">
-              <span style="color:var(--friendly-emerald); font-size:1.1rem;"><i class="fa-solid fa-circle-check"></i></span> Otomatis memotong diskon grosir hingga 15%
-            </li>
-            <li style="display:flex; align-items:center; gap:0.6rem; font-weight:600;">
-              <span style="color:var(--friendly-emerald); font-size:1.1rem;"><i class="fa-solid fa-circle-check"></i></span> Kirim Rincian Order Langsung ke WhatsApp 0813-1193-3172
-            </li>
-          </ul>
-          <a href="<?php echo esc_url( home_url( '/kalkulator' ) ); ?>" class="btn btn-azure btn-lg"><i class="fa-solid fa-calculator"></i> Buka Kalkulator Cetak Lengkap</a>
+      <div class="section-header scroll-reveal">
+        <div class="badge-pill azure"><i class="fa-solid fa-calculator"></i> Kalkulator Cetak & Order Online</div>
+        <h2 class="section-title">Hitung Biaya Cetak <span class="blue-gradient">Instan & Akurat</span></h2>
+        <p class="section-desc">Pilih media cetak, tentukan dimensi atau jumlah, spesifikasi bahan, dan finishing. Dapatkan estimasi total harga instan & kirimkan pesanan langsung ke WhatsApp CS Snaprint.</p>
+      </div>
+
+      <div class="calculator-card">
+        <!-- Product Selector Tabs -->
+        <div class="calc-product-selector" id="calc-tabs">
+          <!-- Dynamic Tabs from JS -->
         </div>
 
-        <div class="scroll-reveal-right" style="background:var(--bg-card); border-radius:var(--radius-lg); padding:2.25rem; border:1px solid var(--border-color); box-shadow:var(--card-shadow-hover);">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; border-b:1px solid var(--border-color); padding-bottom:0.85rem;">
-            <h3 style="font-size:1.2rem;">Simulasi Cetak Banner Flexi</h3>
-            <span style="background:var(--primary-blue-light); color:var(--primary-blue); padding:0.18rem 0.6rem; border-radius:var(--radius-sm); font-size:0.78rem; font-weight:700;">PROMO</span>
-          </div>
+        <div class="calc-main-layout">
+          <!-- Left Inputs Form -->
+          <div>
+            <div id="calc-form-container">
+              <!-- Dynamic Form Fields from JS -->
+            </div>
 
-          <div style="display:flex; flex-direction:column; gap:0.85rem; margin-bottom:1.25rem;">
-            <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
-              <span>Ukuran Standard:</span>
-              <strong>2m x 1m (2 m²)</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
-              <span>Bahan Pilihan:</span>
-              <strong>Flexi Korchin High-Res 440g</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
-              <span>Finishing:</span>
-              <strong>Mata Ayam 4 Sudut</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:var(--friendly-emerald);">
-              <span>Layanan File:</span>
-              <strong>Gratis Cek Resolusi File</strong>
+            <!-- File Drag & Drop Simulator -->
+            <div class="calc-form-group">
+              <label class="calc-label">Upload File Desain (Opsional untuk Cek Resolusi 300 DPI)</label>
+              <div class="file-upload-box" id="file-drop-zone">
+                <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                <p class="file-upload-text">
+                  <strong>Klik atau Seret File Desain ke sini</strong><br>
+                  Format didukung: PDF, TIFF, PNG, JPG, AI, PSD (Maks 100MB)
+                </p>
+                <div id="file-status-text"></div>
+              </div>
+              <input type="file" id="file-input-hidden" style="display:none" accept=".pdf,.png,.jpg,.jpeg,.tiff,.ai,.psd">
             </div>
           </div>
 
-          <div style="background:var(--navy-dark); color:#FFFFFF; border-radius:var(--radius-md); padding:1.1rem; text-align:center; margin-bottom:1.1rem; border:1px solid rgba(0, 210, 255, 0.25);">
-            <span style="font-size:0.75rem; color:#94A3B8; text-transform:uppercase; letter-spacing:0.1em;">Estimasi Biaya</span>
-            <div style="font-size:2.1rem; font-weight:800; color:var(--electric-azure); font-family:var(--font-heading);">Rp 48.000</div>
-          </div>
+          <!-- Right Summary Box -->
+          <div class="calc-summary-box">
+            <div>
+              <div class="summary-header">
+                <h4>Rincian Estimasi Order</h4>
+                <p>Harga transparan tanpa biaya tersembunyi</p>
+              </div>
 
-          <a href="<?php echo esc_url( home_url( '/kalkulator' ) ); ?>" class="btn btn-whatsapp" style="width:100%;"><i class="fa-solid fa-calculator"></i> Coba Kalkulator Cetak Sekarang</a>
+              <ul class="summary-details-list">
+                <li>
+                  <span>Media Cetak:</span>
+                  <span class="val" id="calc-summary-product">Banner Flexi</span>
+                </li>
+                <li>
+                  <span>Spesifikasi:</span>
+                  <span class="val" id="calc-summary-spec">Flexi 280g (2m x 1m)</span>
+                </li>
+                <li>
+                  <span>Jumlah:</span>
+                  <span class="val" id="calc-summary-qty">1 m²</span>
+                </li>
+                <li>
+                  <span>Diskon Grosir:</span>
+                  <span class="val" id="calc-summary-discount" style="color:var(--electric-azure);">Tidak Ada</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="total-price-tag">
+                <label>Estimasi Biaya Total</label>
+                <div class="amount" id="calc-total-amount">Rp 0</div>
+              </div>
+
+              <button type="button" id="btn-order-wa" class="btn btn-whatsapp btn-lg" style="width:100%;">
+                <i class="fa-brands fa-whatsapp"></i> Pesan Sekarang via WhatsApp
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -282,6 +303,9 @@ get_header();
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
   <!-- Section: Tips & Artikel Percetakan Terbaru (SEO Blog) -->
   <section class="section" style="background:var(--bg-card); border-top:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
     <div class="container">
@@ -331,8 +355,8 @@ get_header();
                       <?php echo wp_trim_words( get_the_excerpt(), 16 ); ?>
                     </p>
 
-                    <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
-                      <a href="<?php the_permalink(); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue); display:inline-flex; align-items:center; gap:0.4rem;">
+                    <div class="card-action-bar">
+                      <a href="<?php the_permalink(); ?>" class="btn-read-more">
                         Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
                       </a>
                     </div>
@@ -361,8 +385,8 @@ get_header();
                 <p class="product-desc" style="font-size:0.9rem; line-height:1.6; color:var(--text-muted); margin-bottom:1.25rem;">
                   Ketahui perbedaan gramasi dan ketahanan cuaca antara bahan Flexi 280g dan Korchin 440g untuk promosi outdoor tahan lama.
                 </p>
-                <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
-                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue);">
+                <div class="card-action-bar">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="btn-read-more">
                     Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
                   </a>
                 </div>
@@ -386,8 +410,8 @@ get_header();
                 <p class="product-desc" style="font-size:0.9rem; line-height:1.6; color:var(--text-muted); margin-bottom:1.25rem;">
                   Panduan lengkap memilih jenis potongan stiker label produk makanan dan kosmetik agar lebih praktis saat proses labeling.
                 </p>
-                <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
-                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue);">
+                <div class="card-action-bar">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="btn-read-more">
                     Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
                   </a>
                 </div>
@@ -411,8 +435,8 @@ get_header();
                 <p class="product-desc" style="font-size:0.9rem; line-height:1.6; color:var(--text-muted); margin-bottom:1.25rem;">
                   Hindari hasil cetak buram atau warna pudar dengan menerapkan format warna CMYK dan resolusi minimal 300 DPI sebelum kirim file.
                 </p>
-                <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
-                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue);">
+                <div class="card-action-bar">
+                  <a href="<?php echo esc_url( home_url( '/blog' ) ); ?>" class="btn-read-more">
                     Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
                   </a>
                 </div>

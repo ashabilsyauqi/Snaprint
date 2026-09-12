@@ -89,8 +89,8 @@ $current_cat = get_queried_object();
                     <?php echo wp_trim_words( get_the_excerpt(), 18 ); ?>
                   </p>
 
-                  <div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-color);">
-                    <a href="<?php the_permalink(); ?>" class="service-link" style="font-weight:700; color:var(--primary-blue); display:inline-flex; align-items:center; gap:0.4rem;">
+                  <div class="card-action-bar">
+                    <a href="<?php the_permalink(); ?>" class="btn-read-more">
                       Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
                     </a>
                   </div>
