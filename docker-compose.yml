@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Database MariaDB
+  snaprint-db:
+    image: mariadb:10.11
+    container_name: snaprint-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-snaprint_root_secure_2026}
+      MYSQL_DATABASE: ${DB_NAME:-snaprint_db}
+      MYSQL_USER: ${DB_USER:-snaprint_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-snaprint_pass_secure_2026}
+    volumes:
+      - snaprint_db_data:/var/lib/mysql
+    networks:
+      - snaprint-net
+
+  # WordPress Application Engine
+  snaprint-app:
+    image: wordpress:6.7-php8.2-apache
+    container_name: snaprint-app
+    restart: unless-stopped
+    depends_on:
+      - snaprint-db
+    ports:
+      - "${WP_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: snaprint-db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME:-snaprint_db}
+      WORDPRESS_DB_USER: ${DB_USER:-snaprint_user}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-snaprint_pass_secure_2026}
+      WORDPRESS_TABLE_PREFIX: wp_
+    volumes:
+      - snaprint_wp_data:/var/www/html
+      - ./:/var/www/html/wp-content/themes/snaprint:ro
+    networks:
+      - snaprint-net
+
+volumes:
+  snaprint_db_data:
+  snaprint_wp_data:
+
+networks:
+  snaprint-net:
+    driver: bridge

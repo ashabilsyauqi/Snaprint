@@ -1,0 +1,35 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor & IDE files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Log files
+*.log
+
+# Temporary & backup files
+*.tmp
+*.bak
+*~
+
+# Theme packages
+*.zip
+*.tar.gz
+
+# Environment secrets
+.env
+
+# Generated SQL files
+*production.sql
