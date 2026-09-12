@@ -28,12 +28,16 @@ else
     exit 1
 fi
 
-echo "[3/4] Menunggu database MariaDB siap..."
-sleep 5
+echo "[3/4] Menunggu database MariaDB siap (10 detik)..."
+sleep 10
 
 # 3. Info Status
 echo "[4/4] Status Container:"
 docker ps --filter "name=snaprint"
+
+# Ambil port dari .env atau default 8088
+ACTIVE_PORT=$(grep -E "^WP_PORT=" .env 2>/dev/null | cut -d '=' -f2 || echo "8088")
+ACTIVE_PORT=${ACTIVE_PORT:-8088}
 
 echo ""
 echo "======================================================================"
@@ -41,11 +45,12 @@ echo "  DEPLOYMENT SUKSES! 🚀"
 echo "======================================================================"
 echo "• WordPress Container : snaprint-app"
 echo "• MariaDB Container   : snaprint-db"
-echo "• Port Akses Lokal    : http://localhost:8080 (atau sesuai .env)"
+echo "• Port Akses Lokal    : http://localhost:${ACTIVE_PORT}"
 echo ""
-echo "Untuk import database awal dengan artikel & kalkulator:"
-echo "  1. Siapkan database dengan domain target:"
+echo "Untuk import database awal dengan artikel & kalkulator (otomatis tanpa ketik password):"
+echo "  1. Siapkan database dengan domain target (misal: mysnaprint.com):"
 echo "     ./database/prepare_production_db.sh mysnaprint.com"
-echo "  2. Masukkan ke container DB:"
-echo "     docker compose exec -T snaprint-db mysql -u snaprint_user -p snaprint_db < database/snaprint_db_production.sql"
+echo ""
+echo "  2. Import ke container MariaDB langsung:"
+echo "     docker compose exec -i snaprint-db sh -c 'mariadb -uroot -p\"\$MYSQL_ROOT_PASSWORD\" \"\$MYSQL_DATABASE\"' < database/snaprint_db_production.sql"
 echo "======================================================================"

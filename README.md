@@ -94,8 +94,8 @@ Website resmi & tema WordPress kustom untuk **Snaprint Digital Printing Bekasi**
    # Ganti 'mysnaprint.com' dengan domain Anda:
    ./database/prepare_production_db.sh mysnaprint.com
 
-   # Import ke container MariaDB:
-   docker compose exec -T snaprint-db mysql -u snaprint_user -p snaprint_db < database/snaprint_db_production.sql
+   # Import ke container MariaDB (otomatis tanpa ketik password):
+   docker compose exec -i snaprint-db sh -c 'mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' < database/snaprint_db_production.sql
    ```
 
 ---
